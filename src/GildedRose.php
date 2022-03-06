@@ -19,51 +19,99 @@ class GildedRose
         );
     }
 
-    public function nextDay()
-    {
+    public function reduceQuality($sellIn, $quality) {
+        if($sellIn < 0) {
+            $quality = $quality - 2;
+        } else {
+            $quality = $quality - 1;
+        }
+
+        if($quality < 0) {
+            $quality = 0;
+        }
+
+        return $quality;
+    }
+
+    public function increaseQuality($sellIn, $quality) {
+        if($sellIn < 0) {
+            $quality = $quality + 2;
+        } else {
+            $quality = $quality + 1;
+        }
+
+        if($quality > 50) {
+            $quality = 50;
+        }
+
+        return $quality;
+    }
+
+    public function reduceConjuredQuality($sellIn, $quality) {
+        if($sellIn < 0) {
+            $quality = $quality - 4;
+        } else {
+            $quality = $quality - 2;
+        }
+
+        if($quality < 0) {
+            $quality = 0;
+        }
+
+        return $quality;
+    }
+
+    public function reduceSellIn($sellIn) {
+        return $sellIn = $sellIn - 1;
+    }
+
+    public function getBackStageQuaility($sellIn, $quality) {
+        if($sellIn >= 10) {
+            $quality = $quality + 1;
+        }
+
+        if($sellIn < 10 && $sellIn > 5) {
+            $quality = $quality + 2;
+        }
+
+        if($sellIn <= 5) {
+            $quality = $quality + 3;
+        }
+
+        if($quality > 50) {
+            $quality = 50;
+        }
+
+        if($sellIn < 0) {
+            $quality = 0;
+        }
+
+        return $quality;
+    }
+    
+
+    public function nextDay() {
         foreach ($this->items as $item) {
-            if ($item->name != 'Aged Brie' and $item->name != 'Backstage passes to a TAFKAL80ETC concert') {
-                if ($item->quality > 0) {
-                    if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                        $item->quality = $item->quality - 1;
-                    }
-                }
-            } else {
-                if ($item->quality < 50) {
-                    $item->quality = $item->quality + 1;
-                    if ($item->name == 'Backstage passes to a TAFKAL80ETC concert') {
-                        if ($item->sellIn < 11) {
-                            if ($item->quality < 50) {
-                                $item->quality = $item->quality + 1;
-                            }
-                        }
-                        if ($item->sellIn < 6) {
-                            if ($item->quality < 50) {
-                                $item->quality = $item->quality + 1;
-                            }
-                        }
-                    }
-                }
-            }
-            if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                $item->sellIn = $item->sellIn - 1;
-            }
-            if ($item->sellIn < 0) {
-                if ($item->name != 'Aged Brie') {
-                    if ($item->name != 'Backstage passes to a TAFKAL80ETC concert') {
-                        if ($item->quality > 0) {
-                            if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                                $item->quality = $item->quality - 1;
-                            }
-                        }
-                    } else {
-                        $item->quality = $item->quality - $item->quality;
-                    }
-                } else {
-                    if ($item->quality < 50) {
-                        $item->quality = $item->quality + 1;
-                    }
-                }
+
+            switch($item->name) {
+                case 'normal' :
+                    $item->sellIn = $this->reduceSellIn($item->sellIn);
+                    $item->quality = $this->reduceQuality($item->sellIn, $item->quality);
+                    break;
+                case 'Aged Brie' :
+                    $item->sellIn = $this->reduceSellIn($item->sellIn);
+                    $item->quality = $this->increaseQuality($item->sellIn, $item->quality);
+                    break;
+                case 'Sulfuras, Hand of Ragnaros' :
+                    break;
+                case 'Backstage passes to a TAFKAL80ETC concert' :
+                    $item->sellIn = $this->reduceSellIn($item->sellIn);
+                    $item->quality = $this->getBackStageQuaility($item->sellIn, $item->quality);
+                    break;
+                case 'Conjured Mana Cake' :
+                    $item->sellIn = $this->reduceSellIn($item->sellIn);
+                    $item->quality = $this->reduceConjuredQuality($item->sellIn, $item->quality);
+                    break;
             }
         }
     }
