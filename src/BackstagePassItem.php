@@ -1,22 +1,23 @@
 <?php
 
 namespace App;
+use App\Item;
 
 class BackstagePassItem implements ItemInterface {
 
-    public $item;
+    public Item $item;
     const MAX_QUALITY = 50;
 
-    function __construct($item) {
+    function __construct(Item $item) {
         $this->item = $item;
     }
 
-    function updateItem() {
+    function updateItem() :void {
         $this->reduceSellIn();
         $this->updateQuality();
     }
 
-    function reduceSellIn() {
+    function reduceSellIn() :void {
         $this->item->sellIn = $this->item->sellIn - 1;
     }
     
@@ -28,7 +29,7 @@ class BackstagePassItem implements ItemInterface {
      * and 3 within 5 days of sellin
      * when sell in is passed the item quality is 0 
      */
-    function updateQuality() {
+    function updateQuality() :void {
 
         if($this->item->sellIn >= 10) {
             $this->item->quality = $this->item->quality + 1;

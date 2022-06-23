@@ -1,18 +1,20 @@
 <?php
 
 namespace App;
+use App\Item;
 
 class GildedRose
 {
-    private $items;
+    private mixed $items;
 
-    public function __construct(array $items)
-    {
+    /**
+     * @param array<int, Item> $items
+     */
+    public function __construct(array $items) {
         $this->items = $items;
     }
 
-    public function getItem($which = null)
-    {
+    public function getItem(int $which = null) : Item {
         return ($which === null
             ? $this->items
             : $this->items[$which]
@@ -24,7 +26,7 @@ class GildedRose
      * 
      * Selects the type of item before updating
      */
-    public function nextDay() {
+    public function nextDay() :void {
         foreach ($this->items as $item) {
             switch($item->name) {
                 case 'normal' :

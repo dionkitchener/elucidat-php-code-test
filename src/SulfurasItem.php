@@ -1,25 +1,26 @@
 <?php
 
 namespace App;
+use App\Item;
 
 class SulfurasItem implements ItemInterface {
 
-    public $item;
+    public Item $item;
     const MAX_QUALITY = 80;
 
-    function __construct($item) {
+    function __construct(Item $item) {
         $this->item = $item;
     }
 
-    function updateItem() {
+    function updateItem() :void {
         // Item does not currently change
     }
 
-    function reduceSellIn() {
+    function reduceSellIn() :void {
         // sell in does not reduce
     }
 
-    function updateQuality() {
+    function updateQuality() :void {
         // quality does not change
     }
 }

@@ -1,23 +1,24 @@
 <?php
 
 namespace App;
+use App\Item;
 
 class ConjuredItem implements ItemInterface{
 
-    public $item;
+    public Item $item;
 
     const REDUCTION_RATE = 2;
 
-    function __construct($item) {
+    function __construct(Item $item) {
         $this->item = $item;
     }
 
-    public function updateItem() {
+    public function updateItem() :void{
         $this->reduceSellIn();
         $this->updateQuality();
     }
 
-    function reduceSellIn() {
+    function reduceSellIn() :void {
         $this->item->sellIn = $this->item->sellIn - 1;
     }
 
@@ -27,7 +28,7 @@ class ConjuredItem implements ItemInterface{
      * Updates item quailty based on sell in days
      * quality reduces by 2 times the rate of a normal item
      */
-    function updateQuality()
+    function updateQuality() :void
     {
         if($this->item->sellIn < 0) {
             $this->item->quality = $this->item->quality - (2 * self::REDUCTION_RATE);

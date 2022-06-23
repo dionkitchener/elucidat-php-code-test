@@ -8,7 +8,7 @@ namespace App;
  * Defines the methods needed for all item types
  */
 interface ItemInterface {
-    public function updateItem();
-    public function reduceSellIn();
-    public function updateQuality();
+    public function updateItem() :void;
+    public function reduceSellIn() :void;
+    public function updateQuality() :void;
 }
